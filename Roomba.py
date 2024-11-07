@@ -102,7 +102,7 @@ class RoombaModel(mesa.Model):
     def calculateCleanedPercentage(self):
         """Calcula el porcentaje de celdas que han sido limpiadas.
             return: 
-                (int) Porcentaje de celdas limpias en un rango de 0--100"""
+                (float) Porcentaje de celdas limpias en un rango de 0--100"""
         return ((self.width * self.height) - self.dirtyCells) / (self.width * self.height) * 100
     def calculateTimeTaken(self):
         """Calcula el tiempo que ha tomado limpiar todas las celdas.
