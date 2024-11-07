@@ -29,7 +29,7 @@ def agentPortrayal(agent):
     portrayal = {"Shape": "",
                     "Filled": "true",
                     "Layer": 0,
-                    "w": 1.0,
+                    "w": 1.5,
                     "h": 1.0}
     
     if isinstance(agent, RoombaAgent):
@@ -37,7 +37,7 @@ def agentPortrayal(agent):
         portrayal["Color"] = "red"
     if isinstance(agent, Cell):
         if agent.dirty:
-            portrayal["Shape"] = "rect"
+            portrayal["Shape"] = "potato.png"
             portrayal["Color"] = "brown"
         else:
             portrayal["Shape"] = "rect"
@@ -52,7 +52,7 @@ def generateRandomGridSize():
         tuple: regresa una tupla con dos valores enteros 
                 aleatorios para el ancho y alto del grid.
     """
-    return (random.randint(3, 12),random.randint(3, 12))
+    return (random.randint(6, 12),random.randint(3, 12))
 
 def generateRandomAgents():
     """
@@ -68,11 +68,33 @@ width , height = generateRandomGridSize()
 
 grid = mesa.visualization.CanvasGrid(agentPortrayal, width, height, 500, 500)
 
-stepsSimuated = ChartModule([{ "Label": "Steps", "Color": "Black" }], data_collector_name = 'dataCollector')
-cleanedPercentage = ChartModule([{ "Label": "CleanedPercentage", "Color": "Black" }], data_collector_name = 'dataCollector')
-movementsByAllAgents = ChartModule([{ "Label": "TotalMovements", "Color": "Black" }], data_collector_name = 'dataCollector')
-timeTaken = ChartModule([{ "Label": "TimeTaken", "Color": "Black" }], data_collector_name = 'dataCollector')
+stepsSimuated = ChartModule(
+    [{"Label": "Steps", "Color": "Black"}],
+    data_collector_name='dataCollector',
+    canvas_height=200,  # Adjust canvas height
+    canvas_width=500    # Adjust canvas width
+)
 
+cleanedPercentage = ChartModule(
+    [{"Label": "CleanedPercentage", "Color": "Green"}],  # Use a different color
+    data_collector_name='dataCollector',
+    canvas_height=200,
+    canvas_width=500
+)
+
+movementsByAllAgents = ChartModule(
+    [{"Label": "TotalMovements", "Color": "Blue"}],  # Use a different color
+    data_collector_name='dataCollector',
+    canvas_height=200,
+    canvas_width=500
+)
+
+timeTaken = ChartModule(
+    [{"Label": "TimeTaken", "Color": "Red"}],  # Use a different color
+    data_collector_name='dataCollector',
+    canvas_height=200,
+    canvas_width=500
+)
 
 
 server = mesa.visualization.ModularServer(
@@ -82,9 +104,9 @@ server = mesa.visualization.ModularServer(
     {"numAgents": random.randint(1, 20),
      "width": width,
      "height": height,
-     "dirtyCellsRatio": random.uniform(0.1, 0.5),
-     "maxTime": 100000}
+     "dirtyCellsRatio": random.uniform(0.2, 0.6),
+     "maxTime": 1000}
 )
 
-server.port = 8080
+server.port = 8000
 server.launch()

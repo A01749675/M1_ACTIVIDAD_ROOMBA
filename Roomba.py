@@ -99,6 +99,7 @@ class RoombaModel(mesa.Model):
         if self.dirtyCells == 0:
             self.keepCleaning = False
 
+
     def calculateCleanedPercentage(self):
         """Calcula el porcentaje de celdas que han sido limpiadas.
             return: 
