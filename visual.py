@@ -108,5 +108,5 @@ server = mesa.visualization.ModularServer(
      "maxTime": 1000}
 )
 
-server.port = 8000
+server.port = 8080
 server.launch()
