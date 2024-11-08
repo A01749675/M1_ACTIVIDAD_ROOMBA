@@ -95,11 +95,13 @@ timeTaken = ChartModule(
     canvas_height=200,
     canvas_width=500
 )
+numAgents = ChartModule([{ "Label": "NumberAgents", "Color": "Black" }], data_collector_name = 'dataCollector')
+
 
 
 server = mesa.visualization.ModularServer(
     RoombaModel,
-    [grid, stepsSimuated,cleanedPercentage,movementsByAllAgents,timeTaken],
+    [grid, stepsSimuated,cleanedPercentage,movementsByAllAgents,timeTaken,numAgents],
     "Roombas, by Carlos Iker Fuentes Reyes|Santiago Chevez Trejo",
     {"numAgents": random.randint(1, 20),
      "width": width,

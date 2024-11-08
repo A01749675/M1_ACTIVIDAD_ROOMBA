@@ -52,7 +52,8 @@ class RoombaModel(mesa.Model):
                 "Steps": lambda model: model.schedule.steps,
                 "CleanedPercentage": lambda model: model.calculateCleanedPercentage(),
                 "TotalMovements": lambda model: model.calculateTotalMovements(),
-                "TimeTaken": lambda model: model.calculateTimeTaken()
+                "TimeTaken": lambda model: model.calculateTimeTaken(),
+                "NumberAgents": lambda model: model.getnumAgents()
             },
             agent_reporters={"Position": "pos", "Cleaned": "cleaned", "Movements": "movements"}
         )
@@ -94,6 +95,7 @@ class RoombaModel(mesa.Model):
             self.schedule.step()
             self.calculateCleanedPercentage()
             self.dataCollector.collect(self)
+            self.getnumAgents()
             self.timeRemaining -= 1
         
         if self.dirtyCells == 0:
@@ -110,6 +112,11 @@ class RoombaModel(mesa.Model):
             return
                 (int) Tiempo total en pasos de simulación."""
         return self.limitTime - self.timeRemaining
+    def getnumAgents(self):
+        """Calcula el número de agentes Roomba en el modelo.
+            return:
+                (int) Número de agentes Roomba."""
+        return self.numAgents
 
 class Cell(mesa.Agent):
     """Clase que representa cada celda del grid."""
