@@ -69,7 +69,7 @@ class RoombaModel(mesa.Model):
         """Calcula el total de movimientos realizados por todos los agentes Roomba.
             return: 
                 (int) Número total de movimientos."""
-        return sum(agent.movements for agent in self.schedule.agents if "Roomba" in agent.whoAmI)
+        return sum(agent.movements for agent in self.schedule.agents if isinstance(agent,RoombaAgent))
     
     def dirtyGrid(self):
         """Ensucia un porcentaje de celdas al azar al inicio de la simulación."""
@@ -78,7 +78,7 @@ class RoombaModel(mesa.Model):
             x = self.random.randrange(2, self.grid.width)
             y = self.random.randrange(2, self.grid.height)
             for agent in self.grid[x][y]:
-                if agent.whoAmI == "Cell" and not agent.dirty:
+                if isinstance(agent,Cell) and not agent.dirty:
                     dirtyCount -= 1
                     agent.dirty = True
 
@@ -129,7 +129,6 @@ class Cell(mesa.Agent):
         dirty: indica si la celda está sucia o no, inicialmente False.'''
         
         super().__init__(uniqueId, model)
-        self.whoAmI = "Cell"
         self.dirty = dirty
 
 class RoombaAgent(mesa.Agent):
@@ -141,7 +140,6 @@ class RoombaAgent(mesa.Agent):
             model: referencia al modelo principal."""
             
         super().__init__(uniqueId, model)
-        self.whoAmI = f"Roomba {uniqueId}"
         self.cleaned = 0
         self.movements = 0
         
@@ -161,7 +159,7 @@ class RoombaAgent(mesa.Agent):
             return: True si la celda fue limpiada, False si no."""
         currentCell = self.model.grid.get_cell_list_contents([self.pos])
         for agent in currentCell:
-            if agent.whoAmI == "Cell" and agent.dirty:
+            if isinstance(agent,Cell) and agent.dirty:
                 agent.dirty = False
                 self.cleaned += 1
                 self.model.dirtyCells -= 1
@@ -183,8 +181,8 @@ def update(frame, model, ax):
         agentCounts = np.zeros((model.grid.width, model.grid.height))
         
         for cell_content, (x, y) in model.grid.coord_iter():
-            isDirty = any(agent.whoAmI == "Cell" and agent.dirty for agent in cell_content)
-            hasRoomba = any("Roomba" in agent.whoAmI for agent in cell_content)
+            isDirty = any(isinstance(agent,Cell) and agent.dirty for agent in cell_content)
+            hasRoomba = any(isinstance(agent,RoombaAgent) for agent in cell_content)
             
             if hasRoomba:
                 agentCounts[x][y] = 1  # 1 para Roomba
