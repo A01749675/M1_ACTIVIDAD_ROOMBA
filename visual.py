@@ -107,7 +107,7 @@ server = mesa.visualization.ModularServer(
      "width": width,
      "height": height,
      "dirtyCellsRatio": random.uniform(0.2, 0.6),
-     "maxTime": 1000}
+     "maxTime": 115}
 )
 
 server.port = 8080
